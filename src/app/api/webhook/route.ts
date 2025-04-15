@@ -130,7 +130,6 @@ export async function POST(req: NextRequest, res: NextResponse) {
           let mainQuestions = currentInterview?.questions.map((item: { question: any; }) => {
             return `${item.question}`;
           }).join("\n");
-          console.log(transcript, currentInterview?.description, mainQuestions)
 
           const analytics = await ResponseService.getAnalytics(transcript, currentInterview?.description, mainQuestions);
           console.log(analytics)
