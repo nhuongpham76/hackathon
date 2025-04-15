@@ -27,70 +27,18 @@ export async function POST(req: NextRequest, res: NextResponse) {
 
   if (ref) {
     const interview = await InterviewService.getInterviewById(ref);
-    const question = interview?.questions[0] || '';
-    const conversationId = await ConversationService.createConversation({
-      interview_id: interview?.id,
-      fb_id: senderId,
-      fb_name: user.name,
-      current_index: 0,
-      status: 'start',
-      started_at: new Date(),
-      updated_at: new Date(),
-    });
-
-    const conversationQuestionId = await ConversationService.createConversationQuestion({
-      conversation_id: conversationId,
-      question_text: question?.question,
-      answer_text: null,
-      asked_at: new Date(),
-      answered_at: null,
-      reminder_sent: false,
-    });
-
-    reminderConversationQuestion(conversationQuestionId, senderId);
-
-    const startMessage = await AIService.getStartMessage(user.name, interview?.description);
-    await FacebookService.sendMessage(senderId, startMessage.replace(/^"|"$/g, ''));
-    await new Promise(resolve => setTimeout(resolve, 2000));
-    await FacebookService.sendMessage(senderId, question?.question)
+    startConversation(interview, senderId, user);
 
     return NextResponse.json({}, { status: 200 });
   } else if (text) {
     switch (text) {
       case "start":
         const interview = await InterviewService.getInterviewRandom();
-        const question = interview?.questions[0] || '';
-        const conversationId = await ConversationService.createConversation({
-          interview_id: interview?.id,
-          fb_id: senderId,
-          fb_name: user.name,
-          current_index: 0,
-          status: 'start',
-          started_at: new Date(),
-          updated_at: new Date(),
-        });
+        startConversation(interview, senderId, user);
 
-        const conversationQuestionId = await ConversationService.createConversationQuestion({
-          conversation_id: conversationId,
-          question_text: question?.question,
-          answer_text: null,
-          asked_at: new Date(),
-          answered_at: null,
-          reminder_sent: false,
-        });
-
-        reminderConversationQuestion(conversationQuestionId, senderId);
-
-        const startMessage = await AIService.getStartMessage(user.name, interview?.description);
-        await FacebookService.sendMessage(senderId, startMessage.replace(/^"|"$/g, ''));
-        await new Promise(resolve => setTimeout(resolve, 2000));
-        await FacebookService.sendMessage(senderId, question?.question)
-        break;
+        return NextResponse.json({}, { status: 200 });
       default:
         const conversation = await ConversationService.getCurrentConversation(senderId);
-        const currentInterview = await InterviewService.getInterviewById(conversation?.interview_id);
-        const nextIndex = parseInt(conversation?.current_index || 0) + 1;
-        const nextQuestion = currentInterview?.questions[nextIndex];
 
         if (!conversation || conversation.status !== 'start') {
           FacebookService.sendMessage(senderId, 'No conversation.')
@@ -98,7 +46,8 @@ export async function POST(req: NextRequest, res: NextResponse) {
           return NextResponse.json({}, { status: 200 });
         }
 
-        const conversationQuestion = await ConversationService.getCurrentConversationQuestion(conversation.id);
+        const currentInterview = await InterviewService.getInterviewById(conversation?.interview_id);
+        const conversationQuestion = await ConversationService.getCurrentConversationQuestion(conversation?.id);
 
         if (!conversationQuestion) {
           FacebookService.sendMessage(senderId, 'Conversation was completed.')
@@ -106,18 +55,21 @@ export async function POST(req: NextRequest, res: NextResponse) {
           return NextResponse.json({}, { status: 200 });
         }
 
+        const nextIndex = parseInt(conversation?.current_index || 0) + 1;
+        const nextQuestion = currentInterview?.questions[nextIndex];
+
         await ConversationService.updateConversationQuestion({
           answer_text: text,
           answered_at:new Date(),
           reminder_sent: false,
-        }, conversationQuestion.id);
+        }, conversationQuestion?.id);
 
         ConversationService.updateConversation({
           current_index: nextIndex,
-          status: nextIndex === currentInterview.questions.length ? 'completed' : 'start',
-        }, conversation.id);
+          status: nextIndex === currentInterview?.questions.length ? 'completed' : 'start',
+        }, conversation?.id);
 
-        if (nextIndex === currentInterview.questions.length) {
+        if (nextIndex === currentInterview?.questions.length) {
           const conversationText = await ConversationService.getAllConversationQuestion(conversation.id)
           // @ts-ignore
           const transcript = conversationText.map(item => {
@@ -125,6 +77,7 @@ export async function POST(req: NextRequest, res: NextResponse) {
           }).join("\n");
 
           const endMessage = await AIService.getEndMessage(user.name, transcript);
+
           FacebookService.sendMessage(senderId, endMessage.replace(/^"|"$/g, ''));
 
           let mainQuestions = currentInterview?.questions.map((item: { question: any; }) => {
@@ -132,10 +85,9 @@ export async function POST(req: NextRequest, res: NextResponse) {
           }).join("\n");
 
           const analytics = await ResponseService.getAnalytics(transcript, currentInterview?.description, mainQuestions);
-          console.log(analytics)
           const analyticsObj = await JSON.parse(analytics);
 
-          await ResponseService.createResponse({
+          ResponseService.createResponse({
             created_at: new Date(),
             name: user.name || '',
             interview_id: conversation.interview_id,
@@ -166,11 +118,43 @@ export async function POST(req: NextRequest, res: NextResponse) {
         reminderConversationQuestion(newCQId, senderId);
 
         FacebookService.sendMessage(senderId, nextQuestion?.question)
+
+        return NextResponse.json({}, { status: 200 });
     }
   }
 
   return NextResponse.json({}, { status: 200 });
 }
+
+const startConversation = async (interview: any, senderId: any, user: any) => {
+  const question = interview?.questions[0] || '';
+
+  const conversationId = await ConversationService.createConversation({
+    interview_id: interview?.id,
+    fb_id: senderId,
+    fb_name: user.name,
+    current_index: 0,
+    status: 'start',
+    started_at: new Date(),
+    updated_at: new Date(),
+  });
+
+  const conversationQuestionId = await ConversationService.createConversationQuestion({
+    conversation_id: conversationId,
+    question_text: question?.question,
+    answer_text: null,
+    asked_at: new Date(),
+    answered_at: null,
+    reminder_sent: false,
+  });
+
+  reminderConversationQuestion(conversationQuestionId, senderId);
+
+  const startMessage = await AIService.getStartMessage(user.name, interview?.description);
+  await FacebookService.sendMessage(senderId, startMessage.replace(/^"|"$/g, ''));
+  await new Promise(resolve => setTimeout(resolve, 2000));
+  await FacebookService.sendMessage(senderId, question?.question)
+};
 
 const reminderConversationQuestion = (conversationQuestionId: any, senderId: any) => {
   setTimeout(async () => {
