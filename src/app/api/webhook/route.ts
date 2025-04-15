@@ -181,7 +181,7 @@ const reminderConversationQuestion = (conversationQuestionId: any, user: { sende
     } catch (err) {
       console.error("Error checking/reminding:", err);
     }
-  }, 10000);
+  }, 60000);
 };
 
 export async function GET(req: NextRequest, res: NextResponse) {
