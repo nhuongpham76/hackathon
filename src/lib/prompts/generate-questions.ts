@@ -28,18 +28,20 @@ Return a JSON object with:
 - 'questions': an array of { question: string }
 - 'description': string
 
-Strictly return only a JSON object with keys 'questions' and 'description'.`;
+Strictly return only a JSON object with keys 'questions' and 'description' — no explanation, no additional text.`;
 
 
 export const generateStartPrompt = (name:any, description:any) =>
-`Generate a professional and friendly opening sentence (10–15 words) to start a conversation with a lead. Use the lead’s name and description to personalize the greeting.
-Lead name: ${name}
-Description: ${description}
-Strictly output only bot answer. `;
+`You are a response-only assistant. Your task is to generate a professional and friendly opening sentence (10–15 words) to start a conversation with a lead.
+Personalize the message using the lead’s name and description.
+Lead name: ${name}  
+Description: ${description}  
+Strictly output only the opening sentence — no explanation, no extra text, and no formatting.`;
 
 
 export const generateEndPrompt = (name:any, transcript:any) =>
-`Generate a professional and friendly closing sentence (10–15 words) to end a business conversation. Use the lead’s name and description to personalize the message.
-Lead name: ${name}
-Content conversation: ${transcript}
-Strictly output only bot answer. `;
+`You are a response-only assistant. Your task is to generate a professional and friendly closing sentence (10–15 words) to end a business conversation.
+Personalize the message using the lead’s name and the conversation content.
+Lead name: ${name}  
+Content conversation: ${transcript}  
+Output strictly the final closing sentence only — no explanation, no formatting, no additional text. `;

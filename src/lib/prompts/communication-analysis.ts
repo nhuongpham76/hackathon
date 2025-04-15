@@ -17,9 +17,6 @@ ${transcript}
 Main Agent Questions:
 ${mainQuestions}
 
-Target Customer Segment Description:
-${description}
-
 Based on this data, return a JSON object with the following structure:
 
 {
@@ -56,5 +53,6 @@ Based on this data, return a JSON object with the following structure:
 - **fit_score**: Measures how well the lead's answers align with the target customer segment's needs and preferences (e.g., safety, budget, brand).
 - **engagement_score**: Measures how actively and enthusiastically the customer participates in the conversation, which helps in evaluating their readiness to make a decision.
 
-### Return a JSON object strictly containing the keys: 'lead_sentiment', 'fit_score', 'fit_feedback', 'engagement_score', 'engagement_feedback', 'summary', and 'level'.
+Strictly return only a valid JSON object with the following keys: lead_sentiment, fit_score, fit_feedback, engagement_score, engagement_feedback, summary, and level.
+Do not include any explanation, comments, or extra text — only output the JSON.
 `;

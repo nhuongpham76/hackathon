@@ -165,7 +165,7 @@ const updateResponseById = async (payload: any, id: number) => {
   return data;
 };
 
-const getAnalytics = async (body: any, description: any | null) => {
+const getAnalytics = async (body: any, description: any | null, mainQuestions: any | null) => {
   try {
     const data  = await fetch('https://openrouter.ai/api/v1/chat/completions', {
       method: 'POST',
@@ -182,7 +182,7 @@ const getAnalytics = async (body: any, description: any | null) => {
           },
           {
             "role": "user",
-            "content": getCommunicationAnalysisPrompt(body, description)
+            "content": getCommunicationAnalysisPrompt(body, description, mainQuestions)
           }
         ],
         "response_format": {

@@ -127,7 +127,13 @@ export async function POST(req: NextRequest, res: NextResponse) {
           const endMessage = await AIService.getEndMessage(user.name, transcript);
           FacebookService.sendMessage(senderId, endMessage.replace(/^"|"$/g, ''));
 
-          const analytics = await ResponseService.getAnalytics(transcript, currentInterview?.description);
+          let mainQuestions = currentInterview?.questions.map((item: { question: any; }) => {
+            return `${item.question}`;
+          }).join("\n");
+          console.log(transcript, currentInterview?.description, mainQuestions)
+
+          const analytics = await ResponseService.getAnalytics(transcript, currentInterview?.description, mainQuestions);
+          console.log(analytics)
           const analyticsObj = await JSON.parse(analytics);
 
           await ResponseService.createResponse({

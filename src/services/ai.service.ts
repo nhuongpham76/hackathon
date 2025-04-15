@@ -67,10 +67,7 @@ const getRemindMessage = async () => {
         "messages": [
           {
             "role": "user",
-            "content": `Create a professional and polite reminder message encouraging the user to return
-             and finish answering their question. The message should be  friendly, courteous,
-             and avoid being repetitive(10–15 words). Be sure to keep the tone respectful and motivating.
-             Strictly output only bot answer. `
+            "content": `Output only the reminder message comeback conversation, 10–15 words, friendly and natural tone.`
           }
         ]
       }),
