@@ -98,6 +98,23 @@ const getCurrentConversationQuestion = async (conversationId: any) => {
   return data;
 };
 
+const getConversationById = async (conversationId: any) => {
+  const { data, error } = await supabase
+    .from("conversations")
+    .select("*")
+    .eq('id', conversationId)
+    .limit(1)
+    .single();
+
+  if (error) {
+    console.error("Error fetching conversation:", error);
+
+    return null;
+  }
+
+  return data;
+};
+
 const getConversationQuestionById = async (conversationQuestionId: any) => {
   const { data, error } = await supabase
     .from("conversation_questions")
@@ -143,4 +160,5 @@ export const ConversationService = {
   getCurrentConversationQuestion,
   getAllConversationQuestion,
   getConversationQuestionById,
+  getConversationById,
 };
