@@ -6,13 +6,11 @@
   </strong>
 </div>
 
-<div class="flex" align="center">
-  <br />
-  <img alt="Facebook" src="https://upload.wikimedia.org/wikipedia/commons/b/b8/2021_Facebook_icon.svg" width="32">
-  <img alt="Messenger" src="https://upload.wikimedia.org/wikipedia/commons/b/be/Facebook_Messenger_logo_2020.svg" width="32">
-</div>
-
 ## ✨ Features
+
+### Demo Video
+
+
 ### Auto generate questions
 
 ![489348213_1168848418064767_5655150815486887280_n](https://github.com/user-attachments/assets/a798b22d-4700-47f3-a10f-e14b2a2b979a)
