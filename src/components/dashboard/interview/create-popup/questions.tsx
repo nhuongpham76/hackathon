@@ -105,7 +105,7 @@ function QuestionsPopup({ interviewData, setProceed, setOpen }: Props) {
               setProceed(false);
             }}
           />
-          <h1 className="text-2xl font-semibold">Create Agents</h1>
+          <h1 className="text-2xl font-semibold">Create Agent</h1>
         </div>
         {/*<div className="my-3 text-left w-[96%] text-sm">*/}
         {/*  We will be using these questions during the interviews. Please make*/}
