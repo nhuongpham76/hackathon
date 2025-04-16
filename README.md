@@ -12,8 +12,11 @@
 </div>
 
 ## ✨ Features
+Auto generate questions
 ![489348213_1168848418064767_5655150815486887280_n](https://github.com/user-attachments/assets/a798b22d-4700-47f3-a10f-e14b2a2b979a)
-![485264687_2457143141296717_162812677809666230_n](https://github.com/user-attachments/assets/4e54cfe2-e213-4f41-ae83-f792cf668ee9)
+![483238392_858644409778400_4494107309410005034_n](https://github.com/user-attachments/assets/a85426e5-d002-41e3-93f7-c899b0931d8d)
+
+Auto analytics
 ![490983241_640597385548802_6700014543365087696_n](https://github.com/user-attachments/assets/e457be14-6ecc-48d8-8b89-1744a713d864)
 
 # Intro
