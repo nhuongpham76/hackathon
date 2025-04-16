@@ -19,6 +19,7 @@ import {
   TooltipProvider,
 } from "@/components/ui/tooltip";
 import {ArrowUpDown, HomeIcon} from "lucide-react";
+import {isEmpty} from "lodash";
 
 interface Props {
   params: {
@@ -133,7 +134,7 @@ function InterviewHome({ params, searchParams }: Props) {
   // @ts-ignore
   return (
     <div className="flex flex-col w-full h-full m-2 bg-white">
-      {loading ? (
+      {(loading || isEmpty(responses) || isEmpty(interview)) ? (
         <div className="flex flex-col items-center justify-center h-[80%] w-full">
           <LoaderWithText />
         </div>
