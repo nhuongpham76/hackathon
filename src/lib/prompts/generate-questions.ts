@@ -28,7 +28,7 @@ Return a JSON object with:
 - 'questions': an array of { question: string }
 - 'description': string
 
-Strictly return only a JSON object with keys 'questions' and 'description' — no explanation, no additional text.`;
+Strictly return only a JSON object with keys 'questions' and 'description' — no explanation, no additional text. The output must be a raw, valid JSON object that can be safely parsed using JSON.parse() in JavaScript`;
 
 
 export const generateStartPrompt = (name:any, description:any) =>
@@ -36,7 +36,7 @@ export const generateStartPrompt = (name:any, description:any) =>
 Personalize the message using the lead’s name and description.
 Lead name: ${name}  
 Description: ${description}  
-Strictly output only the opening sentence — no explanation, no extra text, and no formatting.`;
+Output only the opening sentence as plain text — no explanations, no labels, no formatting, no JSON. Strictly return a single natural sentence.`;
 
 
 export const generateEndPrompt = (name:any, transcript:any) =>
@@ -44,4 +44,4 @@ export const generateEndPrompt = (name:any, transcript:any) =>
 Personalize the message using the lead’s name and the conversation content.
 Lead name: ${name}  
 Content conversation: ${transcript}  
-Output strictly the final closing sentence only — no explanation, no formatting, no additional text. `;
+Output strictly the final closing sentence  as plain text — no explanations, no labels, no formatting, no JSON. Strictly return a single natural sentence. `;

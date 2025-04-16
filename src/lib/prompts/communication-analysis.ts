@@ -54,5 +54,5 @@ Based on this data, return a JSON object with the following structure:
 - **engagement_score**: Measures how actively and enthusiastically the customer participates in the conversation, which helps in evaluating their readiness to make a decision.
 
 Strictly return only a valid JSON object with the following keys: lead_sentiment, fit_score, fit_feedback, engagement_score, engagement_feedback, summary, and level.
-Do not include any explanation, comments, or extra text — only output the JSON.
+Do not include any explanation, comments, or extra text. The output must be a raw, valid JSON object that can be safely parsed using JSON.parse() in JavaScript
 `;

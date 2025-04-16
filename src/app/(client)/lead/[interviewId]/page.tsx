@@ -18,7 +18,7 @@ import {
   TooltipContent,
   TooltipProvider,
 } from "@/components/ui/tooltip";
-import {HomeIcon} from "lucide-react";
+import {ArrowUpDown, HomeIcon} from "lucide-react";
 
 interface Props {
   params: {
@@ -32,6 +32,7 @@ interface Props {
 
 function InterviewHome({ params, searchParams }: Props) {
   const [interview, setInterview] = useState<Interview>();
+  const [sortAscending, setSortAscending] = useState(true);
   const [responses, setResponses] = useState<Response[]>([]);
   const { getInterviewById } = useInterviews();
   const router = useRouter();
@@ -104,6 +105,21 @@ function InterviewHome({ params, searchParams }: Props) {
     }
   };
 
+  function sortResponse(ascending: any) {
+    responses.sort((a, b) => {
+      const scoreA = a?.analytics?.fit_score ?? 0;
+      const scoreB = b?.analytics?.fit_score ?? 0;
+
+      if (!!ascending) {
+        return scoreA - scoreB;
+      } else {
+        return scoreB - scoreA;
+      }
+    });
+
+    setSortAscending(!sortAscending);
+  }
+
   const handleCandidateStatusChange = (callId: string, newStatus: string) => {
     setResponses((prevResponses) => {
       return prevResponses?.map((response) =>
@@ -144,6 +160,13 @@ function InterviewHome({ params, searchParams }: Props) {
           </div>
           <div className="flex flex-row w-full p-2 h-[85%] gap-1 ">
             <div className="w-[20%] flex flex-col p-2 divide-y-2 rounded-sm border-2 border-slate-100">
+              <div
+                className={"flex items-center font-bold"}
+                onClick={() => {
+                sortResponse(sortAscending);
+              }}>
+                <ArrowUpDown className="ml-2 h-4 w-4" /> Sort
+              </div>
               <ScrollArea className="h-full p-1 rounded-md border-none">
                 {responses.length > 0 ? (
                   responses?.map((response) => (
