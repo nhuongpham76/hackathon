@@ -2,7 +2,7 @@
 
 <div align="center">
   <strong>
-  <h2>Qualified Leads Without Human Intervention</h2><br />
+  <h2>Smart Keadt Qualification & Prioritization (high intent leads)</h2><br />
   </strong>
 </div>
 
