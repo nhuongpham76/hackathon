@@ -42,7 +42,7 @@ export async function POST(req: NextRequest, res: NextResponse) {
         const conversation = await ConversationService.getCurrentConversation(senderId);
 
         if (!conversation || conversation.status !== 'start') {
-          FacebookService.sendMessage(senderId, 'No conversation.')
+          // FacebookService.sendMessage(senderId, 'No conversation.')
 
           return NextResponse.json({}, { status: 200 });
         }
@@ -51,7 +51,7 @@ export async function POST(req: NextRequest, res: NextResponse) {
         const conversationQuestion = await ConversationService.getCurrentConversationQuestion(conversation?.id);
 
         if (!conversationQuestion) {
-          FacebookService.sendMessage(senderId, 'Conversation was completed.')
+          // FacebookService.sendMessage(senderId, 'Conversation was completed.')
 
           return NextResponse.json({}, { status: 200 });
         }
@@ -121,20 +121,19 @@ const startConversation = async (interview: any, user: { senderId: any, senderNa
   reminderConversationQuestion(conversationQuestionId, user, conversationId);
 
   const startMessage = await AIService.getStartMessage(user.senderName, interview?.description);
-  await FacebookService.sendMessage(user.senderId, startMessage.replace(/^"|"$/g, ''));
+  await FacebookService.sendMessage(user.senderId, startMessage?.replace(/^"|"$/g, ''));
   await new Promise(resolve => setTimeout(resolve, 2000));
   await FacebookService.sendMessage(user.senderId, question?.question)
 };
 
 const stopConversation = async (conversation: any, user: { senderId: any, senderName: any}) => {
   const conversationText = await ConversationService.getAllConversationQuestion(conversation.id)
-  // @ts-ignore
-  const transcript = conversationText.map(item => {
+  const transcript = conversationText?.map(item => {
     return `Agent: ${item.agent}\nLead: ${item.lead}`;
   }).join("\n");
 
   const endMessage = await AIService.getEndMessage(user.senderName, transcript);
-  FacebookService.sendMessage(user.senderId, endMessage.replace(/^"|"$/g, ''));
+  FacebookService.sendMessage(user.senderId, endMessage?.replace(/^"|"$/g, ''));
 
   const currentInterview = await InterviewService.getInterviewById(conversation?.interview_id);
   let mainQuestions = currentInterview?.questions.map((item: { question: any; }) => {
@@ -173,7 +172,7 @@ const reminderConversationQuestion = (conversationQuestionId: any, user: { sende
           ConversationService.updateConversationQuestion({reminder_sent: true}, conversationQuestionId);
 
           const reminderMessage = await AIService.getRemindMessage();
-          FacebookService.sendMessage(user.senderId, reminderMessage.replace(/^"|"$/g, ''));
+          FacebookService.sendMessage(user.senderId, reminderMessage?.replace(/^"|"$/g, ''));
 
           reminderConversationQuestion(conversationQuestionId, user, conversationId);
         } else {
