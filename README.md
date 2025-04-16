@@ -6,6 +6,15 @@
   </strong>
 </div>
 
+<div class="flex" align="center">
+  <a href="https://facebook.com/ahachatter">
+    <img alt="Facebook" src="https://upload.wikimedia.org/wikipedia/commons/b/b8/2021_Facebook_icon.svg" width="32">
+  </a>
+  <a href="https://facebook.com/ahachatter">
+    <img alt="Facebook" src="https://upload.wikimedia.org/wikipedia/commons/b/be/Facebook_Messenger_logo_2020.svg" width="32">
+  </a>
+</div>
+
 ## ✨ Features
 
 ### Demo Video
