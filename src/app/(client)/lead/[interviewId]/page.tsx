@@ -134,7 +134,7 @@ function InterviewHome({ params, searchParams }: Props) {
   // @ts-ignore
   return (
     <div className="flex flex-col w-full h-full m-2 bg-white">
-      {(loading || isEmpty(responses) || isEmpty(interview)) ? (
+      {(loading || isEmpty(interview)) ? (
         <div className="flex flex-col items-center justify-center h-[80%] w-full">
           <LoaderWithText />
         </div>
