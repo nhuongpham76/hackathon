@@ -23,7 +23,7 @@ Based on this data, return a JSON object with the following structure:
  "lead_sentiment": string, // Based on the overall tone and content of the transcript, select one of: "Positive", "Neutral", or "Negative"
  
  "fit_score": number, // 0-100 score based on how well the lead's answers reflect alignment with the target customer segment
- "fit_feedback": string, // 2-3 sentence explanation of how well the lead's needs, preferences, and answers match the target segment
+ "fit_feedback": string, // Explain in 3-4 sentences how the potential customer's needs, preferences, and answers align with the target segment. Based on their responses, recommend the most suitable car type (e.g., Sedan, Hatchback, SUV, Crossover, MPV/Minivan, Coupe, Convertible/Cabriolet, Pickup, Limousine) and suggest an ideal color option for the customer.
  "engagement_score": number, // 0-100 score based on the enthusiasm, clarity, and level of interest shown in responses
  "engagement_feedback": string, // 2-3 sentence summary of how engaged and responsive the lead was during the conversation
  "summary": string, // A short 2-3 sentence summary describing how closely this lead aligns with the customer segment described in ${description}
