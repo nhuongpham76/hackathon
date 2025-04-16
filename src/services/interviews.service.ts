@@ -51,6 +51,11 @@ const updateInterview = async (payload: any, id: string) => {
 };
 
 const deleteInterview = async (id: string) => {
+  await supabase
+    .from("response")
+    .delete()
+    .eq("interview_id", id);
+
   const { error, data } = await supabase
     .from("interview")
     .delete()

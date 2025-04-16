@@ -142,6 +142,8 @@ const stopConversation = async (conversation: any, user: { senderId: any, sender
   }).join("\n");
 
   const analytics = await ResponseService.getAnalytics(transcript, currentInterview?.description, mainQuestions);
+  console.log(analytics);
+  // @ts-ignore
   const analyticsObj = await JSON.parse(analytics);
 
   ResponseService.createResponse({

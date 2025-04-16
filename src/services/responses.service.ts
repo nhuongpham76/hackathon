@@ -1,5 +1,6 @@
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import {getCommunicationAnalysisPrompt, SYSTEM_PROMPT} from "@/lib/prompts/communication-analysis";
+import OpenAI from "openai";
 
 const supabase = createClientComponentClient();
 
@@ -167,34 +168,59 @@ const updateResponseById = async (payload: any, id: number) => {
 
 const getAnalytics = async (body: any, description: any | null, mainQuestions: any | null) => {
   try {
-    const data  = await fetch('https://openrouter.ai/api/v1/chat/completions', {
-      method: 'POST',
-      headers: {
-        'Authorization': 'Bearer ' + process.env.OPENROUTER,
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        "model": "meta-llama/llama-3.1-70b-instruct",
-        "messages": [
-          {
-            "role": "system",
-            "content": SYSTEM_PROMPT,
-          },
-          {
-            "role": "user",
-            "content": getCommunicationAnalysisPrompt(body, description, mainQuestions)
-          }
-        ],
-        "response_format": {
-          "type": "json_object"
-        }
-      }),
+    const openai = new OpenAI({
+      apiKey: process.env.OPENAI_API_KEY,
+      maxRetries: 5,
+      dangerouslyAllowBrowser: true,
     });
-    const baseCompletion = await data.json();
 
-    const basePromptOutput = baseCompletion?.choices[0] || {};
+    const completion = await openai.chat.completions.create({
+      model: "gpt-4o",
+      messages: [
+        {
+          role: "system",
+          content: SYSTEM_PROMPT,
+        },
+        {
+          role: "user",
+          content: getCommunicationAnalysisPrompt(body, description, mainQuestions),
+        },
+      ],
+      response_format: { type: "json_object" },
+    });
 
-    return basePromptOutput.message?.content;
+    return completion.choices[0]?.message?.content;
+
+    //
+    //
+    // const data  = await fetch('https://openrouter.ai/api/v1/chat/completions', {
+    //   method: 'POST',
+    //   headers: {
+    //     'Authorization': 'Bearer ' + process.env.OPENROUTER,
+    //     'Content-Type': 'application/json',
+    //   },
+    //   body: JSON.stringify({
+    //     "model": "meta-llama/llama-3.1-70b-instruct",
+    //     "messages": [
+    //       {
+    //         "role": "system",
+    //         "content": SYSTEM_PROMPT,
+    //       },
+    //       {
+    //         "role": "user",
+    //         "content": getCommunicationAnalysisPrompt(body, description, mainQuestions)
+    //       }
+    //     ],
+    //     "response_format": {
+    //       "type": "json_object"
+    //     }
+    //   }),
+    // });
+    // const baseCompletion = await data.json();
+    //
+    // const basePromptOutput = baseCompletion?.choices[0] || {};
+    //
+    // return basePromptOutput.message?.content;
   } catch (error) {
     console.error("Error analyzing communication skills", error);
 
