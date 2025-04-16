@@ -73,7 +73,7 @@ function Interviews() {
     <main className="p-8 pt-0 ml-12 mr-auto rounded-md">
       <div className="flex flex-col items-left">
         <h2 className="mr-2 text-2xl font-semibold tracking-tight mt-8">
-          Lead Agents
+          AI Agents
         </h2>
         <div className="relative flex items-center mt-1 flex-wrap">
           { <CreateInterviewCard /> }
